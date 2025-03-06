@@ -55,9 +55,9 @@ const AssignmentGroup = {
 // const AssignmentInfo = {
 //   "id": number,
 //   "name": string,
-  // the due date for the assignment
+//   the due date for the assignment
 //   "due_at": Date string,
-  // the maximum points possible for the assignment
+//   the maximum points possible for the assignment
 //   "points_possible": number,
 // }
 
@@ -120,10 +120,16 @@ const LearnerSubmissions = [
 
 // If an assignment is not yet due, do not include it in the results or the average. Additionally, if the learner’s submission is late (submitted_at is past due_at), deduct 10 percent of the total points possible from their score for that assignment.
 //Find
-  // due date
-  // results
-  // average
+  // due date: AssignmentGroup.assignments[i].due_at
+  // results: LearnerSubmissions[i].submission.score
+  // average:
   // submitted: LearnerSubmissions[i].submission.submitted_at
+
+AssignmentGroup.assignments.forEach(assignment => {
+  console.log(assignment.due_at)
+  // if(assignment.due_at later than today) {
+  // }
+})
 
 // TODO What if a value that you are expecting to be a number is instead a string? 
 // If an AssignmentGroup does not belong to its course (mismatching course_id), your program should throw an error, letting the user know that the input was invalid. Similar data validation should occur elsewhere within the program.
@@ -158,24 +164,35 @@ try {
 // Create a function named getLearnerData() that accepts these values as parameters, in the order listed: (CourseInfo, AssignmentGroup, [LearnerSubmission]), and returns the formatted result, which should be an array of objects as described above.
 const getLearnerData = function(info, group, submissions){
   // Your goal is to analyze and transform this data such that the output of your program is an array of objects, each containing the following information in the following format:
-  const output = []
+  const learners = []
+
+  // Learner Schema
+  // const Learner = {
+  //   "id": number,
+  //   "avg": number,
+  //   <assignment_id>: number,
+  // }
+
   
   // {
-      // the ID of the learner for which this data has been collected
+  // the ID of the learner for which this data has been collected“
   //     "id": number,
-      // the learner’s total, weighted average, in which assignments
-      // with more points_possible should be counted for more
-      // e.g. a learner with 50/100 on one assignment and 190/200 on another
-      // would have a weighted average score of 240/300 = 80%.
+
+  // the learner’s total, weighted average, in which assignments
+  // with more points_possible should be counted for more
+  // e.g. a learner with 50/100 on one assignment and 190/200 on another
+  // would have a weighted average score of 240/300 = 80%.
   //     "avg": number,
-      // each assignment should have a key with its ID,
-      // and the value associated with it should be the percentage that
-      // the learner scored on the assignment (submission.score / points_possible)
+
+  // each assignment should have a key with its ID,
+  // and the value associated with it should be the percentage that
+  // the learner scored on the assignment (submission.score / points_possible)
   //     <assignment_id>: number,
-      // if an assignment is not yet due, it should not be included in either
-      // the average or the keyed dictionary of scores
+
+  // if an assignment is not yet due, it should not be included in either
+  // the average or the keyed dictionary of scores
   // }
-  return output
+  return learners
 }
 
 // You may use as many helper functions as you see fit.
