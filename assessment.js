@@ -124,15 +124,18 @@ const LearnerSubmissions = [
 try {
   if (AssignmentGroup.course_id === CourseInfo.id) {
 
-    // try {
-    //   if (AssignmentGroup.points_possible < 1) {
-        
-    //   } else {
-    //     throw "Invalid maximum score"
-    //   }
-    // } catch (error) {
-    //   console.log(error)
-    // }
+    try {
+      AssignmentGroup.assignments.forEach(assignment => {
+        if (assignment.points_possible > 0) {
+          console.log(assignment.points_possible )
+        } else {
+          throw "Invalid maximum score"
+        }
+
+      })
+    } catch (error) {
+      console.log(error)
+    }
 
   } else {
     throw "This assignment group does not belong in this course. (mismatching course_id)"
