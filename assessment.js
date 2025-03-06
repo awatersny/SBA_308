@@ -1,28 +1,67 @@
 // Provided data below
-// const courseInfo = {
+
+// Schema
+// const CourseInfo = {
 //   "id": number,
 //   "name": string,
 // }
 
-// const assignmentGroup = {
+// Data
+const CourseInfo = {
+  id: 451,
+  name: "Introduction to JavaScript"
+};
+
+// Schema
+// const AssignmentGroup = {
 //   "id": number,
 //   "name": string,
-//   // the ID of the course the assignment group belongs to
+  // the ID of the course the assignment group belongs to
 //   "course_id": number,
-//   // the percentage weight of the entire assignment group
+  // the percentage weight of the entire assignment group
 //   "group_weight": number,
 //   "assignments": [AssignmentInfo],
 // }
 
-// const assignmentInfo = {
+// Data
+const AssignmentGroup = {
+  id: 12345,
+  name: "Fundamentals of JavaScript",
+  course_id: 451,
+  group_weight: 25,
+  assignments: [
+    {
+      id: 1,
+      name: "Declare a Variable",
+      due_at: "2023-01-25",
+      points_possible: 50
+    },
+    {
+      id: 2,
+      name: "Write a Function",
+      due_at: "2023-02-27",
+      points_possible: 150
+    },
+    {
+      id: 3,
+      name: "Code the World",
+      due_at: "3156-11-15",
+      points_possible: 500
+    }
+  ]
+};
+
+// Schema
+// const AssignmentInfo = {
 //   "id": number,
 //   "name": string,
-//   // the due date for the assignment
+  // the due date for the assignment
 //   "due_at": Date string,
-//   // the maximum points possible for the assignment
+  // the maximum points possible for the assignment
 //   "points_possible": number,
 // }
 
+// Schema
 // const learnerSubmission = 
 // {
 //     "learner_id": number,
@@ -32,6 +71,51 @@
 //       "score": number
 //     }
 // }
+
+// Data
+const LearnerSubmissions = [
+  {
+    learner_id: 125,
+    assignment_id: 1,
+    submission: {
+      submitted_at: "2023-01-25",
+      score: 47
+    }
+  },
+  {
+    learner_id: 125,
+    assignment_id: 2,
+    submission: {
+      submitted_at: "2023-02-12",
+      score: 150
+    }
+  },
+  {
+    learner_id: 125,
+    assignment_id: 3,
+    submission: {
+      submitted_at: "2023-01-25",
+      score: 400
+    }
+  },
+  {
+    learner_id: 132,
+    assignment_id: 1,
+    submission: {
+      submitted_at: "2023-01-24",
+      score: 39
+    }
+  },
+  {
+    learner_id: 132,
+    assignment_id: 2,
+    submission: {
+      submitted_at: "2023-03-07",
+      score: 140
+    }
+  }
+];
+
 // End of provided data
 
 
