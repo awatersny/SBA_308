@@ -138,6 +138,15 @@ const LearnerSubmissions = [
 // }
 
 // If an AssignmentGroup does not belong to its course (mismatching course_id), your program should throw an error, letting the user know that the input was invalid. Similar data validation should occur elsewhere within the program.
+try {
+  if (AssignmentGroup.course_id === course_id) {
+  
+  } else {
+    throw "This assignment group does not belong in this course. (mismatching course_id)"
+  }
+} catch (error) {
+  console.log(error)
+}
 
 // You should also account for potential errors in the data that your program receives. What if points_possible is 0? You cannot divide by zero. What if a value that you are expecting to be a number is instead a string? 
 
@@ -146,6 +155,7 @@ const LearnerSubmissions = [
 // If an assignment is not yet due, do not include it in the results or the average. Additionally, if the learner’s submission is late (submitted_at is past due_at), deduct 10 percent of the total points possible from their score for that assignment.
 
 // Create a function named getLearnerData() that accepts these values as parameters, in the order listed: (CourseInfo, AssignmentGroup, [LearnerSubmission]), and returns the formatted result, which should be an array of objects as described above.
+const getLearnerData = function(CourseInfo, AssignmentGroup, LearnerSubmissions){}
 
 // You may use as many helper functions as you see fit.
 
