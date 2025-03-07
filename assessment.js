@@ -195,9 +195,11 @@ const getLearnerData = function(info, group, submissions){
     // average:
     // submitted: LearnerSubmissions[i].submission.submitted_at
   
+  console.log("\n-------------------------------")
   submissions.forEach(submission => {
 
-    console.log(submission)
+    console.log("Date submitted: ", submission.submission.submitted_at)
+    console.log("Due date: ", findAssignment(submission.assignment_id).due_at, "\n-------------------------------")
 
     // if(assignment.due_at later than today) {
     // }
