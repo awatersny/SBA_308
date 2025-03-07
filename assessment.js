@@ -120,6 +120,20 @@ const LearnerSubmissions = [
 
 // Create a function named getLearnerData() that accepts these values as parameters, in the order listed: (CourseInfo, AssignmentGroup, [LearnerSubmission]), and returns the formatted result, which should be an array of objects as described above.
 const getLearnerData = function(info, group, submissions){
+  
+  // Helper functions
+  const findAssignment = id => {
+    for(assignment of group.assignments){
+      if(assignment.id === id){
+        return assignment
+      }
+    }
+    return {}
+  }
+  //-------------------
+
+  console.log("Assignment 1:", findAssignment(1))
+  // End of helper functions
 
   // Your goal is to analyze and transform this data such that the output of your program is an array of objects, each containing the following information in the following format:
   const learners = []
@@ -181,9 +195,9 @@ const getLearnerData = function(info, group, submissions){
     // average:
     // submitted: LearnerSubmissions[i].submission.submitted_at
   
-  AssignmentGroup.assignments.forEach(assignment => {
+  submissions.forEach(submission => {
 
-    // console.log(assignment)
+    console.log(submission)
 
     // if(assignment.due_at later than today) {
     // }
