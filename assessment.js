@@ -209,14 +209,25 @@ const getLearnerData = function(info, group, submissions){
       month: parseInt(dateDueStr.slice(5, -3)),
       day: parseInt(dateDueStr.slice(8))
     }
-    console.log(dateSubmitted)
-    console.log(dateDue, "\n-------------------------------")
+    // console.log(dateSubmitted)
+    // console.log(dateDue, "\n-------------------------------")
 
+    console.log("-------------------------------\nDate submitted: ", dateSubmittedStr)
+    console.log("Date due: ", dateDueStr)
+    console.log("Before lateness check:", submission)
     // Check year
-
+    if(dateSubmitted.year > dateDue.year){
+      submission.submission.score *= 0.9
+    } 
     // Check month
-
+    else if(dateSubmitted.month > dateDue.month) {
+      submission.submission.score *= 0.9
+    }
     // Check day
+    else if(dateSubmitted.day > dateDue.day) {
+      submission.submission.score *= 0.9
+    }
+    console.log("After lateness check:", submission)
 
     // console.log("Date submitted: ", dateSubmitted)
     // console.log("Due date: ", dateDue, "\n-------------------------------")
@@ -232,11 +243,11 @@ const getLearnerData = function(info, group, submissions){
   
   // If an AssignmentGroup does not belong to its course (mismatching course_id), your program should throw an error, letting the user know that the input was invalid. Similar data validation should occur elsewhere within the program.
   try {
-    if (AssignmentGroup.course_id === CourseInfo.id) {
+    if (group.course_id === CourseInfo.id) {
   
       // You should also account for potential errors in the data that your program receives. What if points_possible is 0? You cannot divide by zero.
       try {
-        AssignmentGroup.assignments.forEach(assignment => {
+        group.assignments.forEach(assignment => {
           if (assignment.points_possible > 0) {
             // console.log(assignment.points_possible)
           } else {
