@@ -118,62 +118,43 @@ const LearnerSubmissions = [
 
 // End of provided data
 
-// If an assignment is not yet due, do not include it in the results or the average. Additionally, if the learner’s submission is late (submitted_at is past due_at), deduct 10 percent of the total points possible from their score for that assignment.
-//Find
-  // due date: AssignmentGroup.assignments[i].due_at
-  // results: LearnerSubmissions[i].submission.score
-  // average:
-  // submitted: LearnerSubmissions[i].submission.submitted_at
-
-AssignmentGroup.assignments.forEach(assignment => {
-  console.log(assignment.due_at)
-  // if(assignment.due_at later than today) {
-  // }
-})
-
-// TODO What if a value that you are expecting to be a number is instead a string? 
-// If an AssignmentGroup does not belong to its course (mismatching course_id), your program should throw an error, letting the user know that the input was invalid. Similar data validation should occur elsewhere within the program.
-try {
-  if (AssignmentGroup.course_id === CourseInfo.id) {
-
-    // You should also account for potential errors in the data that your program receives. What if points_possible is 0? You cannot divide by zero.
-    try {
-      AssignmentGroup.assignments.forEach(assignment => {
-        if (assignment.points_possible > 0) {
-          console.log(assignment.points_possible )
-        } else {
-          throw "Invalid maximum score"
-        }
-
-      })
-    } catch (error) {
-      console.log(error)
-    }
-
-  } else {
-    throw "This assignment group does not belong in this course. (mismatching course_id)"
-  }
-} catch (error) {
-  console.log(error)
-}
-// Use try/catch and other logic to handle these types of errors gracefully.
-
-
-
-
 // Create a function named getLearnerData() that accepts these values as parameters, in the order listed: (CourseInfo, AssignmentGroup, [LearnerSubmission]), and returns the formatted result, which should be an array of objects as described above.
 const getLearnerData = function(info, group, submissions){
+
   // Your goal is to analyze and transform this data such that the output of your program is an array of objects, each containing the following information in the following format:
   const learners = []
+  try {
+    if(submissions.length > 0) {
+      learners.push(
+        {
+          id: submissions[0].learner_id,
+          avg: 1.0
+        }
+      )
+      if(submissions.length > 1) {
+        let learnerIds = [learners[0].id]
+        for(let i = 1; i < submissions.length; i++) {
+          if(!learnerIds.includes(submissions[i].learner_id)){
+            learners.push(
+              {
+                id: submissions[i].learner_id,
+                avg: 1.0
+              }
+            )
+            learnerIds.push(submissions[i].learner_id)
+          }
+        }
+      }
+    }
+    else {
+      throw "There are no submissions."
+    }
+  } catch (error) {
+    console.log(error)
+  }
 
-  // Learner Schema
-  // const Learner = {
-  //   "id": number,
-  //   "avg": number,
-  //   <assignment_id>: number,
-  // }
+  console.log("\nLearners\n", learners)
 
-  
   // {
   // the ID of the learner for which this data has been collected“
   //     "id": number,
@@ -192,10 +173,59 @@ const getLearnerData = function(info, group, submissions){
   // if an assignment is not yet due, it should not be included in either
   // the average or the keyed dictionary of scores
   // }
+
+  // If an assignment is not yet due, do not include it in the results or the average. Additionally, if the learner’s submission is late (submitted_at is past due_at), deduct 10 percent of the total points possible from their score for that assignment.
+  //Find
+    // due date: AssignmentGroup.assignments[i].due_at
+    // results: LearnerSubmissions[i].submission.score
+    // average:
+    // submitted: LearnerSubmissions[i].submission.submitted_at
+  
+  AssignmentGroup.assignments.forEach(assignment => {
+
+    // console.log(assignment)
+
+    // if(assignment.due_at later than today) {
+    // }
+  })
+
+  // console.log(submissions.filter(submission => submission.learner_id === 132))
+  
+  // TODO What if a value that you are expecting to be a number is instead a string? 
+  // parseInt()
+  
+  // If an AssignmentGroup does not belong to its course (mismatching course_id), your program should throw an error, letting the user know that the input was invalid. Similar data validation should occur elsewhere within the program.
+  try {
+    if (AssignmentGroup.course_id === CourseInfo.id) {
+  
+      // You should also account for potential errors in the data that your program receives. What if points_possible is 0? You cannot divide by zero.
+      try {
+        AssignmentGroup.assignments.forEach(assignment => {
+          if (assignment.points_possible > 0) {
+            console.log(assignment.points_possible )
+          } else {
+            throw "Invalid maximum score"
+          }
+  
+        })
+      } catch (error) {
+        console.log(error)
+      }
+  
+    } else {
+      throw "This assignment group does not belong in this course. (mismatching course_id)"
+    }
+  } catch (error) {
+    console.log(error)
+  }
+  // Use try/catch and other logic to handle these types of errors gracefully.
+
+
   return learners
 }
-
 // You may use as many helper functions as you see fit.
+
+getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions)
 
 // REQUIREMENTS!!!
 // TODO Declare variables properly using let and const where appropriate.
