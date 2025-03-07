@@ -115,10 +115,10 @@ const LearnerSubmissions = [
     }
   }
 ];
-
 // End of provided data
 
-// Create a function named getLearnerData() that accepts these values as parameters, in the order listed: (CourseInfo, AssignmentGroup, [LearnerSubmission]), and returns the formatted result, which should be an array of objects as described above.
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 const getLearnerData = function(info, group, submissions){
   
   // Helper functions
@@ -197,9 +197,29 @@ const getLearnerData = function(info, group, submissions){
   
   console.log("\n-------------------------------")
   submissions.forEach(submission => {
+    const dateSubmittedStr = submission.submission.submitted_at
+    const dateDueStr = findAssignment(submission.assignment_id).due_at
+    const dateSubmitted = {
+      year: parseInt(dateSubmittedStr.slice(0, -6)),
+      month: parseInt(dateSubmittedStr.slice(5, -3)),
+      day: parseInt(dateSubmittedStr.slice(8))
+    }
+    const dateDue = {
+      year: parseInt(dateDueStr.slice(0, -6)),
+      month: parseInt(dateDueStr.slice(5, -3)),
+      day: parseInt(dateDueStr.slice(8))
+    }
+    console.log(dateSubmitted)
+    console.log(dateDue, "\n-------------------------------")
 
-    console.log("Date submitted: ", submission.submission.submitted_at)
-    console.log("Due date: ", findAssignment(submission.assignment_id).due_at, "\n-------------------------------")
+    // Check year
+
+    // Check month
+
+    // Check day
+
+    // console.log("Date submitted: ", dateSubmitted)
+    // console.log("Due date: ", dateDue, "\n-------------------------------")
 
     // if(assignment.due_at later than today) {
     // }
@@ -218,7 +238,7 @@ const getLearnerData = function(info, group, submissions){
       try {
         AssignmentGroup.assignments.forEach(assignment => {
           if (assignment.points_possible > 0) {
-            console.log(assignment.points_possible )
+            // console.log(assignment.points_possible)
           } else {
             throw "Invalid maximum score"
           }
