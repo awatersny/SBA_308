@@ -212,7 +212,7 @@ const getLearnerData = function(info, group, submissions){
     const dateSubmittedStr = submission.submission.submitted_at
     const dateDueStr = assignment.due_at
     const dateSubmitted = Date.parse(dateSubmittedStr + "T00:00:00Z")
-    const dateDue = Date.parse(dateDueStr + "T00:00:00Z")
+    const dateDue = Date.parse(dateDueStr + "T11:59:59Z")
 
     // console.log("Before lateness check:", submission)
     // Has the due date passed?
