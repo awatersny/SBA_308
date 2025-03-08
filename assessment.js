@@ -122,6 +122,7 @@ const LearnerSubmissions = [
 const getLearnerData = function(info, group, submissions){
   
   // Helper functions
+  // Deprecated.  Use find.
   const findAssignment = id => {
     for(assignment of group.assignments){
       if(assignment.id === id){
@@ -130,9 +131,18 @@ const getLearnerData = function(info, group, submissions){
     }
     return {}
   }
+
+  const find = (objArr, targetId) => {
+    for(obj of objArr){
+      if(obj.id === targetId){
+        return obj
+      }
+    }
+    return {}
+  }
   //-------------------
 
-  console.log("Assignment 1:", findAssignment(1))
+  console.log("Assignment 1:", find(group.assignments, 1))
   // End of helper functions
 
   // Your goal is to analyze and transform this data such that the output of your program is an array of objects, each containing the following information in the following format:
@@ -197,22 +207,28 @@ const getLearnerData = function(info, group, submissions){
   
   console.log("\n-------------------------------")
   submissions.forEach(submission => {
+    // Store function result in variable to run the function as few times as possible
+    const assignment = find(group.assignments, submission.assignment_id)
     const dateSubmittedStr = submission.submission.submitted_at
-    const dateDueStr = findAssignment(submission.assignment_id).due_at
+    const dateDueStr = assignment.due_at
     const dateSubmitted = Date.parse(dateSubmittedStr + "T00:00:00Z")
     const dateDue = Date.parse(dateDueStr + "T00:00:00Z")
 
     console.log("Before lateness check:", submission)
-    if(dateSubmitted > dateDue) {
-      submission.submission.score *= 0.9
+    // Has the due date passed?
+    if(dateDue < Date.now()){
+      // 10% penalty for lateness
+      if(dateSubmitted > dateDue) {
+        submission.submission.score *= 0.9
+      }
+      // TODO Add scores to learner object
+      
     }
     console.log("After lateness check:", submission)
 
     console.log("Date submitted: ", dateSubmittedStr)
     console.log("Due date: ", dateDueStr, "\n-------------------------------")
 
-    // if(assignment.due_at later than today) {
-    // }
   })
 
   // console.log(submissions.filter(submission => submission.learner_id === 132))
@@ -252,6 +268,8 @@ const getLearnerData = function(info, group, submissions){
 // You may use as many helper functions as you see fit.
 
 getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions)
+const today = new Date(Date.now())
+console.log(today)
 
 // REQUIREMENTS!!!
 // TODO Declare variables properly using let and const where appropriate.
