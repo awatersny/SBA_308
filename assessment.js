@@ -142,14 +142,15 @@ const getLearnerData = function(info, group, submissions){
   }
 
   const calcAvgScore = (student) => {
+    const propsInStudent = Object.keys(student).length
     let sum = 0
     let i = 1
     // // TODO Use a while loop to satisfy rubric
-    while(i < Object.keys(student).length - 1) {
+    while(i < propsInStudent - 1) {
       sum += student[i]
       i++
     }
-    return sum / (Object.keys(student).length - 2)
+    return sum / (propsInStudent - 2)
   }
   //-------------------
 
@@ -168,7 +169,9 @@ const getLearnerData = function(info, group, submissions){
       if(submissions.length > 1) {
         let learnerIds = [learners[0].id]
         for(let i = 1; i < submissions.length; i++) {
-          if(!learnerIds.includes(submissions[i].learner_id)){
+          // Cache boolean value in a variable
+          let idExists = learnerIds.includes(submissions[i].learner_id)
+          if(!idExists){
             learners.push(
               {
                 id: submissions[i].learner_id,
