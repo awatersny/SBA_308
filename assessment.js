@@ -221,15 +221,17 @@ const getLearnerData = function(info, group, submissions){
     // console.log("Before lateness check:", submission)
     // Has the due date passed?
     if(dateDue < Date.now()){
+      const learner = find(learners, submission.learner_id)
       // 10% penalty for lateness
       if(dateSubmitted > dateDue) {
         submission.submission.score *= 0.9
       }
       // TODO Add scores to learner object
       // Use Object.keys(learner).length
+      console.log("After lateness check:", submission)
+      console.log(learner, "\n-------------------------------")
       
     }
-    console.log("After lateness check:", submission)
 
     // console.log("Date submitted: ", dateSubmittedStr)
     // console.log("Due date: ", dateDueStr, "\n-------------------------------")
