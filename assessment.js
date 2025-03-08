@@ -140,9 +140,13 @@ const getLearnerData = function(info, group, submissions){
     }
     return {}
   }
+
+  const calcAvgScore = (student) => {
+    let i = 1
+    // TODO Use a while loop to satisfy rubric
+  }
   //-------------------
 
-  console.log("Assignment 1:", find(group.assignments, 1))
   // End of helper functions
 
   // Your goal is to analyze and transform this data such that the output of your program is an array of objects, each containing the following information in the following format:
@@ -153,6 +157,7 @@ const getLearnerData = function(info, group, submissions){
         {
           id: submissions[0].learner_id,
           avg: 1.0
+
         }
       )
       if(submissions.length > 1) {
@@ -177,7 +182,6 @@ const getLearnerData = function(info, group, submissions){
     console.log(error)
   }
 
-  console.log("\nLearners\n", learners)
 
   // {
   // the ID of the learner for which this data has been collected“
@@ -214,7 +218,7 @@ const getLearnerData = function(info, group, submissions){
     const dateSubmitted = Date.parse(dateSubmittedStr + "T00:00:00Z")
     const dateDue = Date.parse(dateDueStr + "T00:00:00Z")
 
-    console.log("Before lateness check:", submission)
+    // console.log("Before lateness check:", submission)
     // Has the due date passed?
     if(dateDue < Date.now()){
       // 10% penalty for lateness
@@ -222,12 +226,13 @@ const getLearnerData = function(info, group, submissions){
         submission.submission.score *= 0.9
       }
       // TODO Add scores to learner object
+      // Use Object.keys(learner).length
       
     }
     console.log("After lateness check:", submission)
 
-    console.log("Date submitted: ", dateSubmittedStr)
-    console.log("Due date: ", dateDueStr, "\n-------------------------------")
+    // console.log("Date submitted: ", dateSubmittedStr)
+    // console.log("Due date: ", dateDueStr, "\n-------------------------------")
 
   })
 
@@ -267,21 +272,19 @@ const getLearnerData = function(info, group, submissions){
 }
 // You may use as many helper functions as you see fit.
 
-getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions)
-const today = new Date(Date.now())
-console.log(today)
+console.log("\nLearners\n", getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions))
 
 // REQUIREMENTS!!!
 // TODO Declare variables properly using let and const where appropriate.
-// TODO Use operators to perform calculations on variables and literals.
+// // TODO Use operators to perform calculations on variables and literals.
 // TODO Use strings, numbers, and Boolean values cached within variables.
-// TODO Use at least two if/else statements to control program flow. Optionally, use at least one switch statement.
+// // TODO Use at least two if/else statements to control program flow. Optionally, use at least one switch statement.
 // TODO Use try/catch statements to manage potential errors in the code, such as incorrectly formatted or typed data being fed into your program.
 // TODO Utilize at least two different types of loops.
 // TODO Utilize at least one loop control keyword such as break or continue.
-// TODO Create and/or manipulate arrays and objects.
+// // TODO Create and/or manipulate arrays and objects.
 // TODO Demonstrate the retrieval, manipulation, and removal of items in an array or properties in an object.
-// TODO Use functions to handle repeated tasks.
+// // TODO Use functions to handle repeated tasks.
 // TODO Program outputs processed data as described above. Partial credit will be earned depending on the level of adherence to the described behavior.
 // TODO Ensure that the program runs without errors (comment out things that do not work, and explain your blockers - you can still receive partial credit).
 // TODO Include a README file that contains a description of your application.
