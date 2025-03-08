@@ -142,8 +142,14 @@ const getLearnerData = function(info, group, submissions){
   }
 
   const calcAvgScore = (student) => {
+    let sum = 0
     let i = 1
-    // TODO Use a while loop to satisfy rubric
+    // // TODO Use a while loop to satisfy rubric
+    while(i < Object.keys(student).length - 1) {
+      sum += student[i]
+      i++
+    }
+    return sum / (Object.keys(student).length - 2)
   }
   //-------------------
 
@@ -156,8 +162,7 @@ const getLearnerData = function(info, group, submissions){
       learners.push(
         {
           id: submissions[0].learner_id,
-          avg: 1.0
-
+          avg: 1
         }
       )
       if(submissions.length > 1) {
@@ -167,7 +172,7 @@ const getLearnerData = function(info, group, submissions){
             learners.push(
               {
                 id: submissions[i].learner_id,
-                avg: 1.0
+                avg: 1
               }
             )
             learnerIds.push(submissions[i].learner_id)
@@ -226,16 +231,19 @@ const getLearnerData = function(info, group, submissions){
       if(dateSubmitted > dateDue) {
         submission.submission.score *= 0.9
       }
-      // TODO Add scores to learner object
-      // Use Object.keys(learner).length
-      console.log("After lateness check:", submission)
-      console.log(learner, "\n-------------------------------")
+      // // TODO Add scores to learner object
+      learner[Object.keys(learner).length - 1] = submission.submission.score/assignment.points_possible
+      // console.log("After lateness check:", submission)
+      // console.log(Object.keys(learner).length - 1, "\n-------------------------------")
       
     }
-
+    
     // console.log("Date submitted: ", dateSubmittedStr)
     // console.log("Due date: ", dateDueStr, "\n-------------------------------")
-
+    
+  })
+  learners.forEach(learner => {
+    learner.avg = calcAvgScore(learner)
   })
 
   // console.log(submissions.filter(submission => submission.learner_id === 132))
