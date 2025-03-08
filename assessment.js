@@ -199,38 +199,17 @@ const getLearnerData = function(info, group, submissions){
   submissions.forEach(submission => {
     const dateSubmittedStr = submission.submission.submitted_at
     const dateDueStr = findAssignment(submission.assignment_id).due_at
-    const dateSubmitted = {
-      year: parseInt(dateSubmittedStr.slice(0, -6)),
-      month: parseInt(dateSubmittedStr.slice(5, -3)),
-      day: parseInt(dateSubmittedStr.slice(8))
-    }
-    const dateDue = {
-      year: parseInt(dateDueStr.slice(0, -6)),
-      month: parseInt(dateDueStr.slice(5, -3)),
-      day: parseInt(dateDueStr.slice(8))
-    }
-    // console.log(dateSubmitted)
-    // console.log(dateDue, "\n-------------------------------")
+    const dateSubmitted = Date.parse(dateSubmittedStr + "T00:00:00Z")
+    const dateDue = Date.parse(dateDueStr + "T00:00:00Z")
 
-    console.log("-------------------------------\nDate submitted: ", dateSubmittedStr)
-    console.log("Date due: ", dateDueStr)
     console.log("Before lateness check:", submission)
-    // Check year
-    if(dateSubmitted.year > dateDue.year){
-      submission.submission.score *= 0.9
-    } 
-    // Check month
-    else if(dateSubmitted.month > dateDue.month) {
-      submission.submission.score *= 0.9
-    }
-    // Check day
-    else if(dateSubmitted.day > dateDue.day) {
+    if(dateSubmitted > dateDue) {
       submission.submission.score *= 0.9
     }
     console.log("After lateness check:", submission)
 
-    // console.log("Date submitted: ", dateSubmitted)
-    // console.log("Due date: ", dateDue, "\n-------------------------------")
+    console.log("Date submitted: ", dateSubmittedStr)
+    console.log("Due date: ", dateDueStr, "\n-------------------------------")
 
     // if(assignment.due_at later than today) {
     // }
