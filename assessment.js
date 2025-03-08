@@ -140,18 +140,6 @@ const getLearnerData = function(info, group, submissions){
     }
     return {}
   }
-
-  const calcAvgScore = (student) => {
-    const propsInStudent = Object.keys(student).length
-    let sum = 0
-    let i = 1
-    // // TODO Use a while loop to satisfy rubric
-    while(i < propsInStudent - 1) {
-      sum += student[i]
-      i++
-    }
-    return sum / (propsInStudent - 2)
-  }
   //-------------------
 
   // End of helper functions
@@ -230,15 +218,22 @@ const getLearnerData = function(info, group, submissions){
     // Has the due date passed?
     if(dateDue < Date.now()){
       const learner = find(learners, submission.learner_id)
+      const propsInLearner = Object.keys(learner).length
       // 10% penalty for lateness
       if(dateSubmitted > dateDue) {
         submission.submission.score *= 0.9
       }
       // // TODO Add scores to learner object
-      learner[Object.keys(learner).length - 1] = submission.submission.score/assignment.points_possible
-      // console.log("After lateness check:", submission)
-      // console.log(Object.keys(learner).length - 1, "\n-------------------------------")
-      
+      learner[propsInLearner - 1] = submission.submission.score/assignment.points_possible
+      // // TODO Use a while loop to satisfy rubric
+      // TODO Make averages weighted
+      let i = 1
+      let sum = 0
+      while(i < propsInLearner - 1) {
+        sum += learner[i]
+        i++
+      }
+      learner.avg = sum / (propsInLearner - 2)
     }
     
     // console.log("Date submitted: ", dateSubmittedStr)
@@ -246,7 +241,6 @@ const getLearnerData = function(info, group, submissions){
     
   })
   learners.forEach(learner => {
-    learner.avg = calcAvgScore(learner)
   })
 
   // console.log(submissions.filter(submission => submission.learner_id === 132))
@@ -285,12 +279,12 @@ const getLearnerData = function(info, group, submissions){
 }
 // You may use as many helper functions as you see fit.
 
-console.log("\nLearners\n", getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions))
+console.log(getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions))
 
 // REQUIREMENTS!!!
 // TODO Declare variables properly using let and const where appropriate.
 // // TODO Use operators to perform calculations on variables and literals.
-// TODO Use strings, numbers, and Boolean values cached within variables.
+// // TODO Use strings, numbers, and Boolean values cached within variables.
 // // TODO Use at least two if/else statements to control program flow. Optionally, use at least one switch statement.
 // TODO Use try/catch statements to manage potential errors in the code, such as incorrectly formatted or typed data being fed into your program.
 // TODO Utilize at least two different types of loops.
