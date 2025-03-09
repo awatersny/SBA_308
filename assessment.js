@@ -37,7 +37,7 @@ const AssignmentGroup = {
       points_possible: 50
     },
     {
-      id: 2,
+      id: '2',
       name: "Write a Function",
       due_at: "2023-02-27",
       points_possible: '150'
@@ -99,8 +99,8 @@ const LearnerSubmissions = [
     }
   },
   {
-    learner_id: 132,
-    assignment_id: 1,
+    learner_id: '132',
+    assignment_id: '1',
     submission: {
       submitted_at: "2023-01-24",
       score: 39
@@ -108,7 +108,7 @@ const LearnerSubmissions = [
   },
   {
     learner_id: 132,
-    assignment_id: 2,
+    assignment_id: '2',
     submission: {
       submitted_at: "2023-03-07",
       score: 140
@@ -135,7 +135,8 @@ const getLearnerData = function(info, group, submissions){
   const find = (objArr, targetId) => {
     // return objArr.find(obj => obj.id === targetId) <= I just remembered this was a thing.
     for(obj of objArr){
-      if(obj.id === targetId){
+      obj.id = parseInt(obj.id)
+      if(obj.id === parseInt(targetId)){
         return obj
       }
     }
@@ -172,7 +173,7 @@ const getLearnerData = function(info, group, submissions){
     if(submissions.length > 0) {
       learners.push(
         {
-          id: submissions[0].learner_id,
+          id: parseInt(submissions[0].learner_id),
           avg: 0
         }
       )
@@ -181,14 +182,15 @@ const getLearnerData = function(info, group, submissions){
         for(let i = 1; i < submissions.length; i++) {
           // Cache boolean value in a variable
           let idExists = learnerIds.includes(submissions[i].learner_id)
+          let learnerId = parseInt(submissions[i].learner_id)
           if(!idExists){
             learners.push(
               {
-                id: submissions[i].learner_id,
+                id: learnerId,
                 avg: 0
               }
             )
-            learnerIds.push(submissions[i].learner_id)
+            learnerIds.push(learnerId)
           }
         }
       }
