@@ -166,6 +166,7 @@ const getLearnerData = function(info, group, submissions){
 
   // Your goal is to analyze and transform this data such that the output of your program is an array of objects, each containing the following information in the following format:
   const learners = []
+  let weightedMax = getWeightedMax(group.assignments)
   try {
     if(submissions.length > 0) {
       learners.push(
@@ -250,7 +251,6 @@ const getLearnerData = function(info, group, submissions){
     // console.log("Due date: ", dateDueStr, "\n-------------------------------")
   })
   learners.forEach(learner => {
-    // TODO Replace hard coded 200 with the sum of the assignment weights
     learner.avg /= getWeightedMax(group.assignments)
   })
   // console.log(submissions.filter(submission => submission.learner_id === 132))
@@ -259,8 +259,9 @@ const getLearnerData = function(info, group, submissions){
   // parseInt()
   
   // If an AssignmentGroup does not belong to its course (mismatching course_id), your program should throw an error, letting the user know that the input was invalid. Similar data validation should occur elsewhere within the program.
+  // TODO Actually wrap these try...catch blocks around your code
   try {
-    if (group.course_id === CourseInfo.id) {
+    if (group.course_id === info.id) {
   
       // You should also account for potential errors in the data that your program receives. What if points_possible is 0? You cannot divide by zero.
       try {
@@ -292,16 +293,16 @@ const getLearnerData = function(info, group, submissions){
 console.log(getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions))
 
 // REQUIREMENTS!!!
-// TODO Declare variables properly using let and const where appropriate.
+// // TODO Declare variables properly using let and const where appropriate.
 // // TODO Use operators to perform calculations on variables and literals.
 // // TODO Use strings, numbers, and Boolean values cached within variables.
 // // TODO Use at least two if/else statements to control program flow. Optionally, use at least one switch statement.
-// TODO Use try/catch statements to manage potential errors in the code, such as incorrectly formatted or typed data being fed into your program.
-// TODO Utilize at least two different types of loops.
+// // TODO Use try/catch statements to manage potential errors in the code, such as incorrectly formatted or typed data being fed into your program.
+// // TODO Utilize at least two different types of loops.
 // TODO Utilize at least one loop control keyword such as break or continue.
 // // TODO Create and/or manipulate arrays and objects.
 // TODO Demonstrate the retrieval, manipulation, and removal of items in an array or properties in an object.
 // // TODO Use functions to handle repeated tasks.
-// TODO Program outputs processed data as described above. Partial credit will be earned depending on the level of adherence to the described behavior.
+// // TODO Program outputs processed data as described above. Partial credit will be earned depending on the level of adherence to the described behavior.
 // TODO Ensure that the program runs without errors (comment out things that do not work, and explain your blockers - you can still receive partial credit).
 // TODO Include a README file that contains a description of your application.
