@@ -140,18 +140,32 @@ const getLearnerData = function(info, group, submissions){
     }
     return {}
   }
+
+  const calcAvgScore = (student) => {
+    const propsInStudent = Object.keys(student).length
+    let sum = 0
+    let i = 1
+    // // TODO Use a while loop to satisfy rubric
+    while(i < propsInStudent - 1) {
+      sum += student[i]
+      i++
+    }
+    return sum / (propsInStudent - 2)
+  }
+
   //-------------------
 
   // End of helper functions
 
   // Your goal is to analyze and transform this data such that the output of your program is an array of objects, each containing the following information in the following format:
   const learners = []
+  let weightedDenominator = 0
   try {
     if(submissions.length > 0) {
       learners.push(
         {
           id: submissions[0].learner_id,
-          avg: 1
+          avg: 0
         }
       )
       if(submissions.length > 1) {
@@ -163,7 +177,7 @@ const getLearnerData = function(info, group, submissions){
             learners.push(
               {
                 id: submissions[i].learner_id,
-                avg: 1
+                avg: 0
               }
             )
             learnerIds.push(submissions[i].learner_id)
@@ -213,7 +227,6 @@ const getLearnerData = function(info, group, submissions){
     const dateDueStr = assignment.due_at
     const dateSubmitted = Date.parse(dateSubmittedStr + "T00:00:00Z")
     const dateDue = Date.parse(dateDueStr + "T11:59:59Z")
-
     // console.log("Before lateness check:", submission)
     // Has the due date passed?
     if(dateDue < Date.now()){
@@ -223,26 +236,19 @@ const getLearnerData = function(info, group, submissions){
       if(dateSubmitted > dateDue) {
         submission.submission.score *= 0.9
       }
+      const score = submission.submission.score
       // // TODO Add scores to learner object
       learner[propsInLearner - 1] = submission.submission.score/assignment.points_possible
-      // // TODO Use a while loop to satisfy rubric
-      // TODO Make averages weighted
-      let i = 1
-      let sum = 0
-      while(i < propsInLearner - 1) {
-        sum += learner[i]
-        i++
-      }
-      learner.avg = sum / (propsInLearner - 2)
+      learner.avg += score
     }
-    
     // console.log("Date submitted: ", dateSubmittedStr)
     // console.log("Due date: ", dateDueStr, "\n-------------------------------")
-    
   })
   learners.forEach(learner => {
+    // TODO Replace hard coded 200 with the sum of the assignment weights
+    learner.avg /= 200
   })
-
+  console.log(weightedDenominator)
   // console.log(submissions.filter(submission => submission.learner_id === 132))
   
   // TODO What if a value that you are expecting to be a number is instead a string? 
