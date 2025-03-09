@@ -133,6 +133,7 @@ const getLearnerData = function(info, group, submissions){
   }
 
   const find = (objArr, targetId) => {
+    // return objArr.find(obj => obj.id === targetId) <= I just remembered this was a thing.
     for(obj of objArr){
       if(obj.id === targetId){
         return obj
