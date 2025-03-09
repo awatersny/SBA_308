@@ -141,25 +141,31 @@ const getLearnerData = function(info, group, submissions){
     return {}
   }
 
-  const calcAvgScore = (student) => {
-    const propsInStudent = Object.keys(student).length
-    let sum = 0
-    let i = 1
-    // // TODO Use a while loop to satisfy rubric
-    while(i < propsInStudent - 1) {
-      sum += student[i]
-      i++
+  const getWeightedMax = assignments => {
+    try {
+      let i = 0
+      let sum = 0
+      while(i < assignments.length){
+        if(assignments[i].points_possible > 0) {
+          const dateDue = Date.parse(assignments[i].due_at + "T11:59:59Z")
+          if(dateDue < Date.now()) {
+            sum += assignments[i].points_possible
+          }
+        } else {
+          throw "Invalid maximum score"
+        }
+        i++
+      }
+      return sum
+    } catch (error) {
+      console.log(error)
+      return -1
     }
-    return sum / (propsInStudent - 2)
   }
-
-  //-------------------
-
   // End of helper functions
 
   // Your goal is to analyze and transform this data such that the output of your program is an array of objects, each containing the following information in the following format:
   const learners = []
-  let weightedDenominator = 0
   try {
     if(submissions.length > 0) {
       learners.push(
@@ -191,14 +197,13 @@ const getLearnerData = function(info, group, submissions){
   } catch (error) {
     console.log(error)
   }
-
-
+  
   // {
-  // the ID of the learner for which this data has been collected“
-  //     "id": number,
-
-  // the learner’s total, weighted average, in which assignments
-  // with more points_possible should be counted for more
+    // the ID of the learner for which this data has been collected“
+    //     "id": number,
+    
+    // the learner’s total, weighted average, in which assignments
+    // with more points_possible should be counted for more
   // e.g. a learner with 50/100 on one assignment and 190/200 on another
   // would have a weighted average score of 240/300 = 80%.
   //     "avg": number,
@@ -246,9 +251,8 @@ const getLearnerData = function(info, group, submissions){
   })
   learners.forEach(learner => {
     // TODO Replace hard coded 200 with the sum of the assignment weights
-    learner.avg /= 200
+    learner.avg /= getWeightedMax(group.assignments)
   })
-  console.log(weightedDenominator)
   // console.log(submissions.filter(submission => submission.learner_id === 132))
   
   // TODO What if a value that you are expecting to be a number is instead a string? 
