@@ -120,6 +120,15 @@ const LearnerSubmissions = [
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 const getLearnerData = function(info, group, submissions){
+  // If an AssignmentGroup does not belong to its course (mismatching course_id), your program should throw an error, letting the user know that the input was invalid. Similar data validation should occur elsewhere within the program.
+  // TODO Actually wrap this try...catch blocks around your code
+  try {
+    if (parseInt(group.course_id) !== parseInt(info.id)) {
+      throw "This assignment group does not belong in this course. (mismatching course_id)"
+    }
+  } catch (error) {
+    return error
+  }
   // Error messages
   const invalidMaxScoreError = "The the possible points for one of you assignments is invalid.\nPlease ensure that every value in this category is greater than 0 or remove the assignment"
   
@@ -241,21 +250,7 @@ const getLearnerData = function(info, group, submissions){
   } catch (error) {
     return error
   } 
-    
-  // If an AssignmentGroup does not belong to its course (mismatching course_id), your program should throw an error, letting the user know that the input was invalid. Similar data validation should occur elsewhere within the program.
-  // TODO Actually wrap this try...catch blocks around your code
-  try {
-    if (parseInt(group.course_id) === parseInt(info.id)) {
   
-    } else {
-      throw "This assignment group does not belong in this course. (mismatching course_id)"
-    }
-  } catch (error) {
-    console.log(error)
-  }
-  // Use try/catch and other logic to handle these types of errors gracefully.
-
-
   return learners
 }
 // You may use as many helper functions as you see fit.
