@@ -40,7 +40,7 @@ const AssignmentGroup = {
       id: 2,
       name: "Write a Function",
       due_at: "2023-02-27",
-      points_possible: 150
+      points_possible: '150'
     },
     {
       id: 3,
@@ -87,7 +87,7 @@ const LearnerSubmissions = [
     assignment_id: 2,
     submission: {
       submitted_at: "2023-02-12",
-      score: 150
+      score: '150'
     }
   },
   {
@@ -147,10 +147,11 @@ const getLearnerData = function(info, group, submissions){
       let i = 0
       let sum = 0
       while(i < assignments.length){
-        if(assignments[i].points_possible > 0) {
+        let maxScore = parseInt(assignments[i].points_possible)
+        if(maxScore > 0) {
           const dateDue = Date.parse(assignments[i].due_at + "T11:59:59Z")
           if(dateDue < Date.now()) {
-            sum += assignments[i].points_possible
+            sum += maxScore
           }
         } else {
           throw "Invalid maximum score"
@@ -165,7 +166,6 @@ const getLearnerData = function(info, group, submissions){
   }
   // End of helper functions
 
-  // Your goal is to analyze and transform this data such that the output of your program is an array of objects, each containing the following information in the following format:
   const learners = []
   let weightedMax = getWeightedMax(group.assignments)
   try {
@@ -199,34 +199,7 @@ const getLearnerData = function(info, group, submissions){
   } catch (error) {
     console.log(error)
   }
-  
-  // {
-    // the ID of the learner for which this data has been collected“
-    //     "id": number,
-    
-    // the learner’s total, weighted average, in which assignments
-    // with more points_possible should be counted for more
-  // e.g. a learner with 50/100 on one assignment and 190/200 on another
-  // would have a weighted average score of 240/300 = 80%.
-  //     "avg": number,
 
-  // each assignment should have a key with its ID,
-  // and the value associated with it should be the percentage that
-  // the learner scored on the assignment (submission.score / points_possible)
-  //     <assignment_id>: number,
-
-  // if an assignment is not yet due, it should not be included in either
-  // the average or the keyed dictionary of scores
-  // }
-
-  // If an assignment is not yet due, do not include it in the results or the average. Additionally, if the learner’s submission is late (submitted_at is past due_at), deduct 10 percent of the total points possible from their score for that assignment.
-  //Find
-    // due date: AssignmentGroup.assignments[i].due_at
-    // results: LearnerSubmissions[i].submission.score
-    // average:
-    // submitted: LearnerSubmissions[i].submission.submitted_at
-  
-  console.log("\n-------------------------------")
   submissions.forEach(submission => {
     // Store function result in variable to run the function as few times as possible
     const assignment = find(group.assignments, submission.assignment_id)
@@ -243,9 +216,9 @@ const getLearnerData = function(info, group, submissions){
       if(dateSubmitted > dateDue) {
         submission.submission.score *= 0.9
       }
-      const score = submission.submission.score
+      const score = parseInt(submission.submission.score)
       // // TODO Add scores to learner object
-      learner[propsInLearner - 1] = submission.submission.score/assignment.points_possible
+      learner[propsInLearner - 1] = score/assignment.points_possible
       learner.avg += score
     }
     // console.log("Date submitted: ", dateSubmittedStr)
@@ -256,18 +229,15 @@ const getLearnerData = function(info, group, submissions){
   })
   // console.log(submissions.filter(submission => submission.learner_id === 132))
   
-  // TODO What if a value that you are expecting to be a number is instead a string? 
-  // parseInt()
-  
   // If an AssignmentGroup does not belong to its course (mismatching course_id), your program should throw an error, letting the user know that the input was invalid. Similar data validation should occur elsewhere within the program.
   // TODO Actually wrap these try...catch blocks around your code
   try {
-    if (group.course_id === info.id) {
+    if (parseInt(group.course_id) === parseInt(info.id)) {
   
       // You should also account for potential errors in the data that your program receives. What if points_possible is 0? You cannot divide by zero.
       try {
         group.assignments.forEach(assignment => {
-          if (assignment.points_possible > 0) {
+          if (parseInt(assignment.points_possible) > 0) {
             // console.log(assignment.points_possible)
           } else {
             throw "Invalid maximum score"
