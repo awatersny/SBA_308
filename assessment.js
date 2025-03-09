@@ -120,6 +120,8 @@ const LearnerSubmissions = [
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 const getLearnerData = function(info, group, submissions){
+  // Error messages
+  const invalidMaxScoreError = "The the possible points for one of you assignments is invalid.\nPlease enter a value greater than 0"
   
   // Helper functions
   // Deprecated.  Use find.
@@ -156,7 +158,7 @@ const getLearnerData = function(info, group, submissions){
           }
         } 
         else {
-          throw "Invalid maximum score"
+          throw invalidMaxScoreError
         }
         i++
       }
@@ -169,7 +171,7 @@ const getLearnerData = function(info, group, submissions){
   // End of helper functions
 
   const learners = []
-  let weightedMax = getWeightedMax(group.assignments)
+
   try {
     if(submissions.length > 0) {
       learners.push(
@@ -213,7 +215,6 @@ const getLearnerData = function(info, group, submissions){
         const dateDueStr = assignment.due_at
         const dateSubmitted = Date.parse(dateSubmittedStr + "T00:00:00Z")
         const dateDue = Date.parse(dateDueStr + "T11:59:59Z")
-        // console.log("Before lateness check:", submission)
         // Has the due date passed?
         if(dateDue < Date.now()){
           const learner = find(learners, submission.learner_id)
@@ -227,10 +228,8 @@ const getLearnerData = function(info, group, submissions){
           learner[propsInLearner - 1] = score/assignment.points_possible
           learner.avg += score
         }
-        // console.log("Date submitted: ", dateSubmittedStr)
-        // console.log("Due date: ", dateDueStr, "\n-------------------------------")
       } else {
-        throw "Invalid maximum score"
+        throw invalidMaxScoreError
       }
     })
     learners.forEach(learner => {
@@ -240,26 +239,11 @@ const getLearnerData = function(info, group, submissions){
     console.log(error)
     return -1
   } 
-    // console.log(submissions.filter(submission => submission.learner_id === 132))
     
   // If an AssignmentGroup does not belong to its course (mismatching course_id), your program should throw an error, letting the user know that the input was invalid. Similar data validation should occur elsewhere within the program.
-  // TODO Actually wrap these try...catch blocks around your code
+  // TODO Actually wrap this try...catch blocks around your code
   try {
     if (parseInt(group.course_id) === parseInt(info.id)) {
-  
-      // You should also account for potential errors in the data that your program receives. What if points_possible is 0? You cannot divide by zero.
-      try {
-        group.assignments.forEach(assignment => {
-          if (parseInt(assignment.points_possible) > 0) {
-            // console.log(assignment.points_possible)
-          } else {
-            throw "Invalid maximum score"
-          }
-  
-        })
-      } catch (error) {
-        console.log(error)
-      }
   
     } else {
       throw "This assignment group does not belong in this course. (mismatching course_id)"
