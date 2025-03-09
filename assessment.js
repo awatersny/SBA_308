@@ -121,7 +121,7 @@ const LearnerSubmissions = [
 
 const getLearnerData = function(info, group, submissions){
   // Error messages
-  const invalidMaxScoreError = "The the possible points for one of you assignments is invalid.\nPlease enter a value greater than 0"
+  const invalidMaxScoreError = "The the possible points for one of you assignments is invalid.\nPlease ensure that every value in this category is greater than 0 or remove the assignment"
   
   // Helper functions
   // Deprecated.  Use find.
@@ -142,7 +142,7 @@ const getLearnerData = function(info, group, submissions){
         return obj
       }
     }
-    return {}
+    return -1
   }
 
   const getWeightedMax = assignments => {
@@ -210,6 +210,9 @@ const getLearnerData = function(info, group, submissions){
     submissions.forEach(submission => {
       // Store function result in variable to run the function as few times as possible
       const assignment = find(group.assignments, submission.assignment_id)
+      if(assignment === -1){
+        throw "You have a submission without a corresponding assignment\nPlease add an assignment to correspond with this."
+      }
       if(parseInt(assignment.points_possible) > 0) {
         const dateSubmittedStr = submission.submission.submitted_at
         const dateDueStr = assignment.due_at
@@ -236,8 +239,7 @@ const getLearnerData = function(info, group, submissions){
       learner.avg /= getWeightedMax(group.assignments)
     })
   } catch (error) {
-    console.log(error)
-    return -1
+    return error
   } 
     
   // If an AssignmentGroup does not belong to its course (mismatching course_id), your program should throw an error, letting the user know that the input was invalid. Similar data validation should occur elsewhere within the program.
