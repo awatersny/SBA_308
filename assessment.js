@@ -154,15 +154,16 @@ const getLearnerData = function(info, group, submissions){
           if(dateDue < Date.now()) {
             sum += maxScore
           }
-        } else {
+        } 
+        else {
           throw "Invalid maximum score"
         }
         i++
       }
       return sum
-    } catch (error) {
-      console.log(error)
-      return -1
+    } 
+    catch (error) {
+      return error
     }
   }
   // End of helper functions
@@ -200,37 +201,47 @@ const getLearnerData = function(info, group, submissions){
     }
   } catch (error) {
     console.log(error)
+    return -1
   }
-
-  submissions.forEach(submission => {
-    // Store function result in variable to run the function as few times as possible
-    const assignment = find(group.assignments, submission.assignment_id)
-    const dateSubmittedStr = submission.submission.submitted_at
-    const dateDueStr = assignment.due_at
-    const dateSubmitted = Date.parse(dateSubmittedStr + "T00:00:00Z")
-    const dateDue = Date.parse(dateDueStr + "T11:59:59Z")
-    // console.log("Before lateness check:", submission)
-    // Has the due date passed?
-    if(dateDue < Date.now()){
-      const learner = find(learners, submission.learner_id)
-      const propsInLearner = Object.keys(learner).length
-      // 10% penalty for lateness
-      if(dateSubmitted > dateDue) {
-        submission.submission.score *= 0.9
-      }
-      const score = parseInt(submission.submission.score)
-      // // TODO Add scores to learner object
-      learner[propsInLearner - 1] = score/assignment.points_possible
-      learner.avg += score
-    }
-    // console.log("Date submitted: ", dateSubmittedStr)
-    // console.log("Due date: ", dateDueStr, "\n-------------------------------")
-  })
-  learners.forEach(learner => {
-    learner.avg /= getWeightedMax(group.assignments)
-  })
-  // console.log(submissions.filter(submission => submission.learner_id === 132))
   
+  try {
+    submissions.forEach(submission => {
+      // Store function result in variable to run the function as few times as possible
+      const assignment = find(group.assignments, submission.assignment_id)
+      if(parseInt(assignment.points_possible) > 0) {
+        const dateSubmittedStr = submission.submission.submitted_at
+        const dateDueStr = assignment.due_at
+        const dateSubmitted = Date.parse(dateSubmittedStr + "T00:00:00Z")
+        const dateDue = Date.parse(dateDueStr + "T11:59:59Z")
+        // console.log("Before lateness check:", submission)
+        // Has the due date passed?
+        if(dateDue < Date.now()){
+          const learner = find(learners, submission.learner_id)
+          const propsInLearner = Object.keys(learner).length
+          // 10% penalty for lateness
+          if(dateSubmitted > dateDue) {
+            submission.submission.score *= 0.9
+          }
+          const score = parseInt(submission.submission.score)
+          // // TODO Add scores to learner object
+          learner[propsInLearner - 1] = score/assignment.points_possible
+          learner.avg += score
+        }
+        // console.log("Date submitted: ", dateSubmittedStr)
+        // console.log("Due date: ", dateDueStr, "\n-------------------------------")
+      } else {
+        throw "Invalid maximum score"
+      }
+    })
+    learners.forEach(learner => {
+      learner.avg /= getWeightedMax(group.assignments)
+    })
+  } catch (error) {
+    console.log(error)
+    return -1
+  } 
+    // console.log(submissions.filter(submission => submission.learner_id === 132))
+    
   // If an AssignmentGroup does not belong to its course (mismatching course_id), your program should throw an error, letting the user know that the input was invalid. Similar data validation should occur elsewhere within the program.
   // TODO Actually wrap these try...catch blocks around your code
   try {
