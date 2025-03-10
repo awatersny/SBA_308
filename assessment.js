@@ -180,7 +180,6 @@ const getLearnerData = function(info, group, submissions){
   // End of helper functions
 
   const learners = []
-
   try {
     if(submissions.length > 0) {
       learners.push(
@@ -208,11 +207,10 @@ const getLearnerData = function(info, group, submissions){
       }
     }
     else {
-      throw "There are no submissions."
+      throw "There are no learners."
     }
   } catch (error) {
-    console.log(error)
-    return -1
+    return error
   }
   
   try {
